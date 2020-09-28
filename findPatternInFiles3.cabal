@@ -1,0 +1,40 @@
+name:                findPatternInFiles3
+version:             0.1.0.0
+-- synopsis:
+-- description:
+homepage:            https://github.com/stla/findPatternInFiles3#readme
+license:             GPL-3
+license-file:        LICENSE
+author:              Stéphane Laurent
+maintainer:          laurent_step@outlook.fr
+copyright:           2020 Stéphane Laurent
+category:            Executable
+build-type:          Simple
+extra-source-files:  README.md
+cabal-version:       >=1.10
+
+library
+  hs-source-dirs:      src
+  exposed-modules:     AbsoluteFilePathToRelativeFilePath
+                     , GetGrepResults
+                     , GetAhaHTML
+  build-depends:       base >= 4.7 && < 5
+                     , Glob
+                     , process-extras
+                     , bytestring
+                     , path
+                     , directory
+  default-language:    Haskell2010
+
+executable findPatternInFiles3
+  hs-source-dirs:      src-exe
+  main-is:             Main.hs
+  ghc-options:        -fwarn-unused-imports -O3 -optc-Os
+  default-language:    Haskell2010
+  build-depends:       base >= 4.7 && < 5
+                     , optparse-applicative
+                     , findPatternInFiles3
+
+source-repository head
+  type:     git
+  location: https://github.com/stla/findPatternInFiles3
