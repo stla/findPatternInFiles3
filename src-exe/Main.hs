@@ -1,8 +1,8 @@
 module Main where
 
-import GetGrepResults
-import GetAhaHTML
-import Options.Applicative
+import           GetGrepResults
+import           GetAhaHTML
+import           Options.Applicative
 
 data Arguments = Arguments
   { filetype :: String
