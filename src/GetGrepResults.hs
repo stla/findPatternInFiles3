@@ -4,8 +4,8 @@ import System.Process.ByteString (readProcessWithExitCode)
 import Data.ByteString (ByteString, empty)
 import qualified Data.ByteString.Char8 as B
 import System.Exit (ExitCode)
-import System.FilePath.Glob (glob)
-import AbsoluteFilePathToRelativeFilePath
+import System.FilePath.Find (find, extension, (<=?), (==?))
+import qualified System.FilePath.Find as F
 
 runGrep :: String -> String -> Bool -> Maybe Int 
            -> IO(ExitCode, ByteString, ByteString)
@@ -26,10 +26,9 @@ runGrep fileType pattern wholeword depth =
            ) 
            empty
        Just n -> do 
-         absFiles <- glob $ (foldr (++) "*." (replicate n "*/")) ++ fileType
-         relFiles <- mapM absoluteFilePathToRelativeFilePath absFiles
+         files <- find (F.depth <=? n) (extension ==? ("." ++ fileType)) "./"
          readProcessWithExitCode "grep" 
-           ([pattern] ++ relFiles ++ ["--colour=always", option]) empty
+           ([pattern] ++ files ++ ["--colour=always", option]) empty
        
 getGrepResults :: String -> String -> Bool -> Maybe Int -> IO()
 getGrepResults fileType pattern wholeword depth = 
