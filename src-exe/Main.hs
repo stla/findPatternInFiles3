@@ -8,16 +8,17 @@ data Arguments = Arguments
   { filetype :: String
   , pattern :: String
   , wholeword :: Bool
+  , ignorecase :: Bool
   , depth :: Maybe Int
   , html :: Bool }
 
 findFiles :: Arguments -> IO()
-findFiles (Arguments filetype pattern w d html) = 
+findFiles (Arguments filetype pattern w i d html) = 
   if html
     then
-      getAhaHTML filetype pattern w d  
+      getAhaHTML filetype pattern w i d  
     else
-      getGrepResults filetype pattern w d  
+      getGrepResults filetype pattern w i d  
   
 run :: Parser Arguments
 run = Arguments
@@ -31,6 +32,10 @@ run = Arguments
           ( long "wholeword"
          <> short 'w'
          <> help "Match whole word" ) 
+     <*> switch
+          ( long "ignorecase"
+         <> short 'i'
+         <> help "Ignore case" ) 
      <*> ( optional $ option auto 
           ( metavar "DEPTH"
          <> long "depth"
@@ -46,5 +51,5 @@ main = execParser opts >>= findFiles
   where
     opts = info (helper <*> run)
       ( fullDesc
-     <> progDesc "Find files containing a pattern"
-     <> header "findPatternInFiles -- based on 'grep' and 'aha'" )
+     <> progDesc "Find files containing a pattern."
+     <> header "findPattern -- based on 'grep' and 'aha'" )
